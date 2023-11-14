@@ -1,10 +1,13 @@
 package com.koreaIT.JAM;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
 		
+		List<Article> articles = new ArrayList<>();
 		
 		System.out.println("== 프로그램 시작 ==");
 		
@@ -13,7 +16,7 @@ public class Main {
 		while (true) {
 			
 			System.out.println("명령어 입력)");
-			String command = sc.nextLine();
+			String command = sc.nextLine().trim();
 			
 			int lastArticleId = 0;
 			
@@ -23,16 +26,31 @@ public class Main {
 			}
 			
 			if (command.equals("article list")) {
-				System.out.println("게시글이 없습니다.");
+				
+				if (articles.size() == 0) {
+					System.out.println("게시글이 없습니다.");
+					continue;
+				}
+				else {
+					
+					System.out.println("번호   /   제목");
+					
+					for (Article article : articles) {
+						System.out.printf("%d   /   %s   /   %s", article.id, article.title);
+					}
+				}
 			}
 			else if (command.equals("article write")) {
+				
 				int id = lastArticleId + 1;
+				
 				System.out.println("제목 : ");
 				String title = sc.nextLine();
 				
 				if (title.length() == 0) {
 					System.out.println("제목을 입력해주세요.");
 				}
+				
 				System.out.println("내용 : ");
 				String body = sc.nextLine();
 				
@@ -40,11 +58,33 @@ public class Main {
 					System.out.println("제목을 입력해주세요.");
 				}
 				
-				System.out.println("입력된 제목 : " + title);
-				System.out.println("입력된 내용 : " + body);
-				System.out.printf("%d번 글이 생성되었습니다.", id);
+				Article article = new Article(id, title, body);
+				articles.add(article);
+				
+				System.out.printf("%d번 글이 생성되었습니다.\n", id);
 				
 				lastArticleId++;
+			}
+			else if (command.startsWith("article detail")) {
+				String[] commandDiv = command.split(" ");
+				int id = Integer.parseInt(commandDiv[2]);
+				
+				if (id == 0) {
+					System.out.println("게시물 번호를 입력해주세요.");
+					continue;
+				}
+				
+				for (Article article : articles) {
+					if (article.id == id) {
+						System.out.printf("번호 : %d", article.id);
+						System.out.printf("제목 : %s", article.title);
+						System.out.printf("내용 : %s", article.body);
+					}
+					else {
+						System.out.println("존재하지 않는 게시물입니다.");
+					}
+				}
+				
 			}
 			else if (command.equals("exit")) {
 				break;
@@ -60,5 +100,18 @@ public class Main {
 		
 		sc.close();
 	}
+}
 
+
+class Article {
+	int id;
+	String title;
+	String body;
+	
+	Article(int id, String title, String body){
+		this. id = id;
+		this. title = title;
+		this. body = body;
+	}
+	
 }
