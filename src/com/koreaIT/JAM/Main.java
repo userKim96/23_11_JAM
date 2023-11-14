@@ -35,7 +35,8 @@ public class Main {
 					
 					System.out.println("번호   /   제목");
 					
-					for (Article article : articles) {
+					for (int i = articles.size()-1; i >= 0; i--) {
+						Article article = articles.get(i);
 						System.out.printf("%d   /   %s   /   %s", article.id, article.title);
 					}
 				}
@@ -66,26 +67,47 @@ public class Main {
 				lastArticleId++;
 			}
 			else if (command.startsWith("article detail")) {
+				
 				String[] commandDiv = command.split(" ");
 				int id = Integer.parseInt(commandDiv[2]);
-				
-				if (id == 0) {
-					System.out.println("게시물 번호를 입력해주세요.");
-					continue;
-				}
+				boolean found = false;
 				
 				for (Article article : articles) {
 					if (article.id == id) {
+						found = true;
 						System.out.printf("번호 : %d", article.id);
 						System.out.printf("제목 : %s", article.title);
-						System.out.printf("내용 : %s", article.body);
+						System.out.printf("내용 : %s\n", article.body);
+						break;
 					}
-					else {
-						System.out.println("존재하지 않는 게시물입니다.");
+					
+					if (found == false) {
+						System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
 					}
 				}
 				
 			}
+			else if (command.startsWith("article delete")) {
+				String[] commandDiv = command.split(" ");
+				int id = Integer.parseInt(commandDiv[2]);
+				boolean found = false;
+				
+				for (Article article : articles) {
+					if (article.id == id) {
+						found = true;
+						System.out.printf("%d번 게시물을 삭제했습니다.", id);
+						articles.remove(article);
+						
+						break;
+					}
+					if (found == false) {
+						System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
+					}
+				}
+			}
+			
+			
+			
 			else if (command.equals("exit")) {
 				break;
 			}
