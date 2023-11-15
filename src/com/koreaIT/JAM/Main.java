@@ -109,6 +109,14 @@ public class Main {
 				}
 				
 			}
+			else if (command.startsWith("article search")) {
+				String[] commandDiv = command.split(" ");
+				String searchKeyword = commandDiv[2];
+				
+				
+			}
+			
+			
 			else if (command.startsWith("article delete")) {
 				String[] commandDiv = command.split(" ");
 				int id = Integer.parseInt(commandDiv[2]);
