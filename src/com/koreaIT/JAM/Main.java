@@ -33,17 +33,19 @@ public class Main {
 				}
 				else {
 					
-					System.out.println("번호   /   제목");
+					System.out.println("번호   /     작석일     /   제목");
 					
 					for (int i = articles.size()-1; i >= 0; i--) {
 						Article article = articles.get(i);
-						System.out.printf("%d   /   %s   /   %s", article.id, article.title);
+						System.out.printf("%d   /   %s   /   %s\n", article.id, article.regDate, article.title);
 					}
 				}
 			}
 			else if (command.equals("article write")) {
 				
 				int id = lastArticleId + 1;
+				
+				String regDate = Util.getNow();
 				
 				System.out.println("제목 : ");
 				String title = sc.nextLine();
@@ -59,7 +61,9 @@ public class Main {
 					System.out.println("제목을 입력해주세요.");
 				}
 				
-				Article article = new Article(id, title, body);
+				
+				
+				Article article = new Article(id, regDate, title, body);
 				articles.add(article);
 				
 				System.out.printf("%d번 글이 생성되었습니다.\n", id);
@@ -75,14 +79,15 @@ public class Main {
 				for (Article article : articles) {
 					if (article.id == id) {
 						found = true;
-						System.out.printf("번호 : %d", article.id);
-						System.out.printf("제목 : %s", article.title);
+						System.out.printf("번호 : %d\n", article.id);
+						System.out.printf("작성일 : %s\n", article.regDate);
+						System.out.printf("제목 : %s\n", article.title);
 						System.out.printf("내용 : %s\n", article.body);
 						break;
 					}
 					
 					if (found == false) {
-						System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
+						System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					}
 				}
 				
@@ -90,19 +95,20 @@ public class Main {
 			else if (command.startsWith("article delete")) {
 				String[] commandDiv = command.split(" ");
 				int id = Integer.parseInt(commandDiv[2]);
-				boolean found = false;
+				Article foundArticle = null;
 				
 				for (Article article : articles) {
 					if (article.id == id) {
-						found = true;
-						System.out.printf("%d번 게시물을 삭제했습니다.", id);
+						foundArticle = article;
+						System.out.printf("%d번 게시물을 삭제했습니다.\n", id);
 						articles.remove(article);
 						
 						break;
 					}
-					if (found == false) {
-						System.out.printf("%d번 게시물은 존재하지 않습니다.", id);
-					}
+				}
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+					continue;
 				}
 			}
 			
@@ -127,11 +133,13 @@ public class Main {
 
 class Article {
 	int id;
+	String regDate;
 	String title;
 	String body;
 	
-	Article(int id, String title, String body){
+	Article(int id, String regDate, String title, String body){
 		this. id = id;
+		this. regDate = regDate;
 		this. title = title;
 		this. body = body;
 	}
