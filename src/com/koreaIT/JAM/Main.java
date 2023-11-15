@@ -5,11 +5,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	
+	static List<Article> articles = new ArrayList<>();
+	
+	static int lastArticleId = 0;
+	
 	public static void main(String[] args) {
 		
-		List<Article> articles = new ArrayList<>();
 		
 		System.out.println("== 프로그램 시작 ==");
+		
+		makeTestDate();
+
+
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -18,7 +26,7 @@ public class Main {
 			System.out.println("명령어 입력)");
 			String command = sc.nextLine().trim();
 			
-			int lastArticleId = 0;
+	
 			
 			if (command.length() == 0) {
 				System.out.println("명령어를 입력해주세요.");
@@ -45,9 +53,8 @@ public class Main {
 				
 				int id = lastArticleId + 1;
 				
-				int viewCount = 0;
-				
 				String regDate = Util.getNow();
+				
 				String updateDate = Util.getNow();
 				
 				System.out.println("제목 : ");
@@ -66,7 +73,7 @@ public class Main {
 				
 				
 				
-				Article article = new Article(id, updateDate, regDate, viewCount, title, body);
+				Article article = new Article(id, updateDate, regDate, title, body);
 				articles.add(article);
 				
 				System.out.printf("%d번 글이 생성되었습니다.\n", id);
@@ -77,10 +84,12 @@ public class Main {
 				
 				String[] commandDiv = command.split(" ");
 				int id = Integer.parseInt(commandDiv[2]);
+				
 				Article foundArticle = null;
 				
 				for (Article article : articles) {
 					if (article.id == id) {
+						
 						foundArticle = article;
 						foundArticle.viewCount++;
 						
@@ -173,7 +182,20 @@ public class Main {
 		
 		sc.close();
 	}
+
+	private static void makeTestDate() {
+		
+		for (int i=1; i <= 5; i++) {
+			
+			articles.add(new Article(i, Util.getNow(), Util.getNow(), "제목"+i, "내용"+i));
+			lastArticleId++;
+		}
+		System.out.println("테스트 데이터 생성완료.");
+		
+	}
 }
+
+
 
 
 class Article {
@@ -185,11 +207,11 @@ class Article {
 	String body;
 	
 	
-	Article(int id, String regDate, String updateDate, int viewCount, String title, String body){
+	Article(int id, String regDate, String updateDate, String title, String body){
 		this. id = id;
 		this. regDate = regDate;
 		this. updateDate = updateDate;
-		this. viewCount = viewCount;
+		this. viewCount = 0;
 		this. title = title;
 		this. body = body;
 		
