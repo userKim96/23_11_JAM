@@ -7,8 +7,10 @@ import java.util.Scanner;
 public class Main {
 
 	static List<Article> articles = new ArrayList<>();
+	static List<Member> members = new ArrayList<>();
 
 	static int lastArticleId = 0;
+	static int lastMemberId = 0;
 
 	public static void main(String[] args) {
 
@@ -28,26 +30,93 @@ public class Main {
 				continue;
 			}
 
-			if (command.startsWith("article list")) {
+			if (command.equals("member join")) {
+
+				int id = lastArticleId + 1;
+				String regDate = Util.getNow();
+				String updateDate = Util.getNow();
+				String name = null;
+				String loginId = null;
+				String loginPw = null;
+
+				while (true) {
+
+					System.out.println("이름 : ");
+					name = sc.nextLine();
+
+					if (name.length() == 0) {
+						System.out.println("이름을 입력해주세요.");
+						continue;
+					}
+					break;
+				}
+
+				while (true) {
+
+					System.out.println("아이디 : ");
+					loginId = sc.nextLine();
+
+					if (loginId.length() == 0) {
+						System.out.println("아이디를 입력해주세요.");
+						continue;
+					} else if (isMemberLoginId(loginId) == true) {
+						System.out.println("이미 사용중인 아이디입니다.");
+						continue;
+					}
+					break;
+				}
+
+				while (true) {
+
+					System.out.println("비밀번호 : ");
+					loginPw = sc.nextLine();
+
+					if (loginPw.length() == 0) {
+						System.out.println("아이디를 입력해주세요.");
+						continue;
+					}
+
+					System.out.println("비밀번호 체크 : ");
+					String loginPwCheck = sc.nextLine();
+
+					if (loginPwCheck.length() == 0) {
+						System.out.println("아이디를 입력해주세요.");
+						continue;
+					}
+
+					if (loginPw.equals(loginPwCheck) == false) {
+						System.out.println("비밀번호가 일치하지 않습니다.");
+						continue;
+					}
+					break;
+				}
+
+				Member member = new Member(id, regDate, updateDate, name, loginId, loginPw);
+				members.add(member);
+
+				System.out.printf("%s님 가입되었습니다.\n", name);
+
+				lastArticleId++;
+			} else if (command.startsWith("article list")) {
 
 				if (articles.size() == 0) {
 					System.out.println("게시글이 없습니다.");
 					continue;
 				}
 				String searchKeyword = command.substring("article list".length()).trim();
-				
+
 				List<Article> forPrintArticles = articles;
-				
+
 				if (searchKeyword.length() > 0) {
-					
+
 					forPrintArticles = new ArrayList<Article>();
-					
+
 					for (Article article : articles) {
 						if (article.title.contains(searchKeyword)) {
 							forPrintArticles.add(article);
 						}
 					}
-					
+
 					if (forPrintArticles.size() == 0) {
 						System.out.printf("'%s'를(을) 포함한 제목이 없습니다.", searchKeyword);
 						continue;
@@ -61,9 +130,9 @@ public class Main {
 					}
 					continue;
 				}
-				
+
 				System.out.println("번호   /     제목     /   조회수");
-				
+
 				for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 					Article article = forPrintArticles.get(i);
 					System.out.printf("%d   /   %s   /   %d\n", article.id, article.title, article.viewCount);
@@ -79,9 +148,7 @@ public class Main {
 				System.out.println("제목 : ");
 				String title = sc.nextLine();
 
-				if (title.length() == 0) {
-					System.out.println("제목을 입력해주세요.");
-				}
+				System.out.println("제목을 입력해주세요.");
 
 				System.out.println("내용 : ");
 				String body = sc.nextLine();
@@ -123,8 +190,7 @@ public class Main {
 						System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 					}
 				}
-			}
-			else if (command.startsWith("article delete")) {
+			} else if (command.startsWith("article delete")) {
 				String[] commandDiv = command.split(" ");
 				int id = Integer.parseInt(commandDiv[2]);
 
@@ -189,6 +255,17 @@ public class Main {
 		sc.close();
 	}
 
+	private static boolean isMemberLoginId(String loginId) {
+
+		for (Member member : members) {
+			if (member.loginId.equals(loginId)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private static Article getArticleById(int id) {
 
 		for (Article article : articles) {
@@ -209,7 +286,6 @@ public class Main {
 		}
 		System.out.println("테스트 데이터 생성완료.");
 	}
-
 }
 
 class Article {
@@ -229,5 +305,23 @@ class Article {
 		this.body = body;
 
 	}
+}
 
+class Member {
+	int id;
+	String regDate;
+	String updateDate;
+	String name;
+	String loginId;
+	String loginPw;
+
+	Member(int id, String regDate, String updateDate, String name, String loginId, String loginPw) {
+		this.id = id;
+		this.regDate = regDate;
+		this.updateDate = updateDate;
+		this.name = name;
+		this.loginId = loginId;
+		this.loginPw = loginPw;
+
+	}
 }
