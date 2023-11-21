@@ -15,7 +15,7 @@ public class MemberController {
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
-		lastMemberId = 0;
+		this.lastMemberId = 0;
 	}
 
 	public void doJoin() {
