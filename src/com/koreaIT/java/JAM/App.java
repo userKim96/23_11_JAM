@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.JAM.controller.MemberController;
 import com.koreaIT.java.JAM.util.Util;
 import com.koreaIT.java.JAM.vo.Article;
 import com.koreaIT.java.JAM.vo.Member;
@@ -14,13 +15,12 @@ public class App {
 	List<Member> members;
 	
 	int lastArticleId;
-	int lastMemberId;
+	
 	
 	App() {
 		articles = new ArrayList<>();
 		members = new ArrayList<>();
 		lastArticleId = 0;
-		lastMemberId = 0;
 	}
 
 
@@ -31,6 +31,8 @@ public class App {
 		makeTestDate();
 
 		Scanner sc = new Scanner(System.in);
+		
+		MemberController memberController = new MemberController(members, sc);
 		
 		while (true) {
 
@@ -44,71 +46,8 @@ public class App {
 
 			if (command.equals("member join")) {
 
-				int id = lastArticleId + 1;
-				String regDate = Util.getNow();
-				String updateDate = Util.getNow();
-				String name = null;
-				String loginId = null;
-				String loginPw = null;
+				memberController.doJoin();
 
-				while (true) {
-
-					System.out.println("이름 : ");
-					name = sc.nextLine();
-
-					if (name.length() == 0) {
-						System.out.println("이름을 입력해주세요.");
-						continue;
-					}
-					break;
-				}
-
-				while (true) {
-
-					System.out.println("아이디 : ");
-					loginId = sc.nextLine();
-
-					if (loginId.length() == 0) {
-						System.out.println("아이디를 입력해주세요.");
-						continue;
-					} else if (isMemberLoginId(loginId) == true) {
-						System.out.println("이미 사용중인 아이디입니다.");
-						continue;
-					}
-					break;
-				}
-
-				while (true) {
-
-					System.out.println("비밀번호 : ");
-					loginPw = sc.nextLine();
-
-					if (loginPw.length() == 0) {
-						System.out.println("아이디를 입력해주세요.");
-						continue;
-					}
-
-					System.out.println("비밀번호 체크 : ");
-					String loginPwCheck = sc.nextLine();
-
-					if (loginPwCheck.length() == 0) {
-						System.out.println("아이디를 입력해주세요.");
-						continue;
-					}
-
-					if (loginPw.equals(loginPwCheck) == false) {
-						System.out.println("비밀번호가 일치하지 않습니다.");
-						continue;
-					}
-					break;
-				}
-
-				Member member = new Member(id, regDate, updateDate, name, loginId, loginPw);
-				members.add(member);
-
-				System.out.printf("%s님 가입되었습니다.\n", name);
-
-				lastArticleId++;
 			} else if (command.startsWith("article list")) {
 
 				if (articles.size() == 0) {
@@ -267,17 +206,6 @@ public class App {
 		sc.close();
 	}
 	
-	private boolean isMemberLoginId(String loginId) {
-
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private Article getArticleById(int id) {
 
 		for (Article article : articles) {
