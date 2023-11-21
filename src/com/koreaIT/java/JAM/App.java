@@ -1,25 +1,37 @@
-package com.koreaIT.JAM;
+package com.koreaIT.java.JAM;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+import com.koreaIT.java.JAM.util.Util;
+import com.koreaIT.java.JAM.vo.Article;
+import com.koreaIT.java.JAM.vo.Member;
 
-	static List<Article> articles = new ArrayList<>();
-	static List<Member> members = new ArrayList<>();
+public class App {
+	
+	List<Article> articles;
+	List<Member> members;
+	
+	int lastArticleId;
+	int lastMemberId;
+	
+	App() {
+		articles = new ArrayList<>();
+		members = new ArrayList<>();
+		lastArticleId = 0;
+		lastMemberId = 0;
+	}
 
-	static int lastArticleId = 0;
-	static int lastMemberId = 0;
 
-	public static void main(String[] args) {
 
+	public void start() {
 		System.out.println("== 프로그램 시작 ==");
 
 		makeTestDate();
 
 		Scanner sc = new Scanner(System.in);
-
+		
 		while (true) {
 
 			System.out.println("명령어 입력)");
@@ -254,8 +266,8 @@ public class Main {
 
 		sc.close();
 	}
-
-	private static boolean isMemberLoginId(String loginId) {
+	
+	private boolean isMemberLoginId(String loginId) {
 
 		for (Member member : members) {
 			if (member.loginId.equals(loginId)) {
@@ -266,7 +278,7 @@ public class Main {
 		return false;
 	}
 
-	private static Article getArticleById(int id) {
+	private Article getArticleById(int id) {
 
 		for (Article article : articles) {
 			if (article.id == id) {
@@ -277,7 +289,7 @@ public class Main {
 		return null;
 	}
 
-	private static void makeTestDate() {
+	private void makeTestDate() {
 
 		for (int i = 1; i <= 5; i++) {
 
@@ -285,43 +297,5 @@ public class Main {
 			lastArticleId++;
 		}
 		System.out.println("테스트 데이터 생성완료.");
-	}
-}
-
-class Article {
-	int id;
-	String regDate;
-	String updateDate;
-	int viewCount;
-	String title;
-	String body;
-
-	Article(int id, String regDate, String updateDate, String title, String body) {
-		this.id = id;
-		this.regDate = regDate;
-		this.updateDate = updateDate;
-		this.viewCount = 0;
-		this.title = title;
-		this.body = body;
-
-	}
-}
-
-class Member {
-	int id;
-	String regDate;
-	String updateDate;
-	String name;
-	String loginId;
-	String loginPw;
-
-	Member(int id, String regDate, String updateDate, String name, String loginId, String loginPw) {
-		this.id = id;
-		this.regDate = regDate;
-		this.updateDate = updateDate;
-		this.name = name;
-		this.loginId = loginId;
-		this.loginPw = loginPw;
-
 	}
 }
