@@ -6,16 +6,32 @@ import java.util.Scanner;
 import com.koreaIT.java.JAM.util.Util;
 import com.koreaIT.java.JAM.vo.Member;
 
-public class MemberController {
+public class MemberController extends Controller {
 	
 	private List<Member> members;
 	private Scanner sc;
+	private String actionMethodName;
+	private String command;
 	private int lastMemberId;
 	
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
 		this.lastMemberId = 0;
+	}
+	
+	public void doAction(String actionMethodName, String command) {
+		this.actionMethodName = actionMethodName;
+		this.command = command;
+		
+		switch (actionMethodName) {
+		case "join" :
+			doJoin();
+			break;
+		default :
+			System.out.println("존재하지 않는 세부기능입니다.");
+			break;
+		}
 	}
 
 	public void doJoin() {

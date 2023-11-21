@@ -7,10 +7,12 @@ import java.util.Scanner;
 import com.koreaIT.java.JAM.util.Util;
 import com.koreaIT.java.JAM.vo.Article;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	
 	private static List<Article> articles;
 	private Scanner sc;
+	private String actionMethodName;
+	private String command;
 	private static int lastArticleId;
 
 	public ArticleController(List<Article> articles, Scanner sc) {
@@ -20,7 +22,33 @@ public class ArticleController {
 		
 	}
 	
-	public void showList(String command) {
+	public void doAction(String actionMethodName, String command) {
+		this.actionMethodName = actionMethodName;
+		this.command = command;
+		
+		switch (actionMethodName) {
+		case "list" :
+			showList();
+			break;
+		case "write" :
+			doWrite();
+			break;
+		case "detail" :
+			showDetail();
+			break;
+		case "delete" :
+			doDelete();
+			break;
+		case "modify" :
+			doModify();
+			break;
+		default :
+			System.out.println("존재하지 않는 세부기능입니다.");
+			break;
+		}
+	}
+	
+	public void showList() {
 		
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다.");
@@ -90,7 +118,7 @@ public class ArticleController {
 		lastArticleId++;
 	}
 	
-	public void showDetail(String command) {
+	public void showDetail() {
 		String[] commandDiv = command.split(" ");
 		int id = Integer.parseInt(commandDiv[2]);
 
@@ -111,7 +139,7 @@ public class ArticleController {
 		System.out.printf("내용 : %s\n", foundArticle.body);
 	}
 	
-	public void doDelete(String command) {
+	public void doDelete() {
 		
 		String[] commandDiv = command.split(" ");
 		int id = Integer.parseInt(commandDiv[2]);
@@ -134,7 +162,7 @@ public class ArticleController {
 		}
 	}
 	
-	public void doModify(String command) {
+	public void doModify() {
 		
 		String[] commandDiv = command.split(" ");
 		int id = Integer.parseInt(commandDiv[2]);
