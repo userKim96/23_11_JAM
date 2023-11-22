@@ -15,8 +15,8 @@ public class ArticleController extends Controller {
 	private String command;
 	private static int lastArticleId;
 
-	public ArticleController(List<Article> articles, Scanner sc) {
-		this.articles = articles;
+	public ArticleController(Scanner sc) {
+		this.articles = new ArrayList<Article>();
 		this.sc = sc;
 		this.lastArticleId = 0;
 		
@@ -206,14 +206,14 @@ public class ArticleController extends Controller {
 		return null;
 	}
 
-	public static void makeTestDate() {
+	public static void makeTestArticleDate() {
 
 		for (int i = 1; i <= 5; i++) {
 
 			articles.add(new Article(i, Util.getNow(), Util.getNow(), "제목" + i, "내용" + i));
 			lastArticleId++;
 		}
-		System.out.println("테스트 데이터 생성완료.");
+		System.out.println("테스트 게시글 데이터 생성완료.");
 	}
 
 

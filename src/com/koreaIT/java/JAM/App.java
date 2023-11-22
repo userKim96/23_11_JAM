@@ -1,23 +1,15 @@
 package com.koreaIT.java.JAM;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.JAM.controller.ArticleController;
 import com.koreaIT.java.JAM.controller.Controller;
 import com.koreaIT.java.JAM.controller.MemberController;
-import com.koreaIT.java.JAM.vo.Article;
-import com.koreaIT.java.JAM.vo.Member;
 
 public class App {
 
-	List<Article> articles;
-	List<Member> members;
-
 	App() {
-		articles = new ArrayList<>();
-		members = new ArrayList<>();
+
 	}
 
 	public void start() {
@@ -25,11 +17,12 @@ public class App {
 
 		Scanner sc = new Scanner(System.in);
 
-		MemberController memberController = new MemberController(members, sc);
-		ArticleController articleController = new ArticleController(articles, sc);
+		MemberController memberController = new MemberController(sc);
+		ArticleController articleController = new ArticleController(sc);
 		Controller controller;
 		
-		ArticleController.makeTestDate();
+		ArticleController.makeTestArticleDate();
+		MemberController.makeTestMemberDate();
 
 		while (true) {
 
