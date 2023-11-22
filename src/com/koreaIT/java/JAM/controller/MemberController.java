@@ -37,6 +37,9 @@ public class MemberController extends Controller {
 		case "logout" :
 			doLogOut();
 			break;
+		case "whoami" :
+			showWhoami();
+			break;
 		default :
 			System.out.println("존재하지 않는 세부기능입니다.");
 			break;
@@ -191,6 +194,24 @@ public class MemberController extends Controller {
 		loginedMember = null;
 		
 		System.out.println("로그아웃 되었습니다.");
+	}
+	
+	private void showWhoami() {
+		
+		if (loginedMember == null) {
+			
+			System.out.println("로그아웃 상태에서 이용할 수 없습니다.");
+			return;
+		}
+		
+		
+		System.out.println("====== 회원 정보 ======\n");
+		System.out.printf("번호 : %d\n", loginedMember.id);
+		System.out.printf("가입일 : %s\n", loginedMember.regDate);
+		System.out.printf("수정일 : %s\n", loginedMember.updateDate);
+		System.out.printf("이름 : %s\n", loginedMember.name);
+		System.out.printf("아이디 : %s\n", loginedMember.loginId);
+		
 	}
 
 	private boolean isMemberLoginIdByloginId(String loginId) {
