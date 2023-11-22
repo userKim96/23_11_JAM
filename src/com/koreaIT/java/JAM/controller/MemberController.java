@@ -9,18 +9,17 @@ import com.koreaIT.java.JAM.vo.Member;
 
 public class MemberController extends Controller {
 	
-	private static List<Member> members;
+	private List<Member> members;
 	private Scanner sc;
 	private String actionMethodName;
 	private String command;
-	private Member loginedMember;
-	private static int lastMemberId;
+
+	private int lastMemberId;
 	
 	public MemberController(Scanner sc) {
 		this.members = new ArrayList<Member>();
 		this.sc = sc;
 		this.lastMemberId = 0;
-		this.loginedMember = null;
 	}
 	
 	public void doAction(String actionMethodName, String command) {
@@ -29,17 +28,37 @@ public class MemberController extends Controller {
 		
 		switch (actionMethodName) {
 		case "join" :
+			if (isLogined()) {
+				System.out.println("로그인 상태에서 이용할 수 없습니다.");
+				return;
+			}
 			doJoin();
 			break;
+			
 		case "login" :
+			if (isLogined()) {
+				System.out.println("로그인 상태에서 이용할 수 없습니다.");
+				return;
+			}
 			doLogin();
 			break;
+			
 		case "logout" :
+			if (isLogined() == false) {
+				System.out.println("로그아웃 상태에서 이용할 수 없습니다.");
+				return;
+			}
 			doLogOut();
 			break;
+			
 		case "whoami" :
+			if (isLogined() == false) {
+				System.out.println("로그아웃 상태에서 이용할 수 없습니다.");
+				return;
+			}
 			showWhoami();
 			break;
+			
 		default :
 			System.out.println("존재하지 않는 세부기능입니다.");
 			break;
@@ -134,11 +153,6 @@ public class MemberController extends Controller {
 	
 	private void doLogin() {
 		
-		if (loginedMember != null) {
-			System.out.println("로그인 상태입니다.");
-			return;
-		}
-		
 		while (true) {
 			
 			
@@ -186,10 +200,6 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogOut() {
-		if (loginedMember == null) {
-			System.out.println("로그아웃 상태입니다.");
-			return;
-		}
 		
 		loginedMember = null;
 		
@@ -197,13 +207,6 @@ public class MemberController extends Controller {
 	}
 	
 	private void showWhoami() {
-		
-		if (loginedMember == null) {
-			
-			System.out.println("로그아웃 상태에서 이용할 수 없습니다.");
-			return;
-		}
-		
 		
 		System.out.println("====== 회원 정보 ======\n");
 		System.out.printf("번호 : %d\n", loginedMember.id);
@@ -236,7 +239,7 @@ public class MemberController extends Controller {
 		return null;
 	}
 	
-	public static void makeTestMemberDate() {
+	public void makeTestMemberDate() {
 
 		for (int i = 1; i <= 5; i++) {
 
